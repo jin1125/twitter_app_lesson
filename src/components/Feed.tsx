@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import { db } from '../firebase'
-import TweetInput from './TweetInput'
+import React, { useEffect, useState } from "react";
+import { db } from "../firebase";
 import styles from "./Feed.module.css";
+import Post from "./Post";
+import TweetInput from "./TweetInput";
 
-const Feed:React.FC = () => {
-  const [posts,setPosts] = useState([{
-    id: "",
-    avatar: "",
-    image: "",
-    text: "",
-    timestamp: null,
-    username: "",
-  }]);
-
+const Feed: React.FC = () => {
+  const [posts, setPosts] = useState([
+    {
+      id: "",
+      avatar: "",
+      image: "",
+      text: "",
+      timestamp: null,
+      username: "",
+    },
+  ]);
 
   useEffect(() => {
     const unSub = db
@@ -35,15 +37,28 @@ const Feed:React.FC = () => {
     };
   }, []);
 
-
   return (
     <div className={styles.feed}>
-      <TweetInput/>
-      {posts.map((post)=>(
-        <h3>{post.id}</h3>
-      ))}
-    </div>
-  )
-}
+      <TweetInput />
+      {posts[0]?.id && (
+        <>
+        {posts.map((post) => (
+          <Post
+            key={post.id}
+            postId={post.id}
+            avatar={post.avatar}
+            image={post.image}
+            text={post.text}
+            timestamp={post.timestamp}
+            username={post.username}
+          />
+        ))}
+        </>
+      )}
 
-export default Feed
+      
+    </div>
+  );
+};
+
+export default Feed;
